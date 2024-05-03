@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "448842968157",
+    "project_id": "baristaautomation-494db",
+    "storage_bucket": "baristaautomation-494db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448842968157:android:3c95d3c2fc0052e264b1b4",
+        "android_client_info": {
+          "package_name": "com.mertg.baristaautomation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC689YXh1dfo6DVlLIZBvlqWhpiagtB-Ng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
