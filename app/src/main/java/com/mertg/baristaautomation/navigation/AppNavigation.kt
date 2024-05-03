@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mertg.baristaautomation.view.LoginScreen
 import com.mertg.baristaautomation.view.MainPage
+import com.mertg.baristaautomation.view.MainScaffold
 import com.mertg.baristaautomation.view.ShowOrdersPage
 import com.mertg.baristaautomation.viewmodel.AuthViewModel
-
 
 @Composable
 fun AllAppNavigation(navController : NavHostController) {
@@ -16,7 +16,7 @@ fun AllAppNavigation(navController : NavHostController) {
 
     NavHost(navController, startDestination = Screen.MainPage.route) {
         composable(Screen.MainPage.route) {
-            MainPage(navController)
+            MainPage()
         }
         composable(Screen.LoginPage.route) {
             LoginScreen(
@@ -27,20 +27,19 @@ fun AllAppNavigation(navController : NavHostController) {
         composable(Screen.ShowOrdersPage.route){
             ShowOrdersPage()
         }
-
     }
 }
-
 
 @Composable
 fun StartNavigation(navController: NavHostController) {
     val viewModel: AuthViewModel = AuthViewModel()
 
-    NavHost(navController, startDestination = Screen.LoginPage.route) {
-        composable(Screen.MainPage.route){
-            MainPage(navController = navController)
+    NavHost(navController, startDestination = Screen.MainScaffold.route) {
+        composable(Screen.MainScaffold.route){
+            MainScaffold()
         }
         composable(Screen.LoginPage.route){
+            LoginScreen(viewModel = viewModel, navController = navController)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.mertg.baristaautomation.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mertg.baristaautomation.navigation.Screen
@@ -30,10 +32,12 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    var context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -55,9 +59,10 @@ fun LoginScreen(
             onClick = {
                 viewModel.loginUser(email, password) { success ->
                     if (success) {
-                        navController.navigate(Screen.MainPage.route)
+                        navController.navigate(Screen.MainScaffold.route)
                     } else {
                         // Hata durumunda gerekirse mesaj gösterilebilir
+                        Toast.makeText(context, "Hatalı Giriş", Toast.LENGTH_SHORT).show()
                     }
                 }
             },
