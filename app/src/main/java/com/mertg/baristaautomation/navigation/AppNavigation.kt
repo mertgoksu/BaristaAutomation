@@ -1,10 +1,10 @@
 package com.mertg.baristaautomation.navigation
 
+import LoginScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mertg.baristaautomation.view.LoginScreen
 import com.mertg.baristaautomation.view.MainPage
 import com.mertg.baristaautomation.view.MainScaffold
 import com.mertg.baristaautomation.view.ShowOrdersPage
@@ -34,7 +34,7 @@ fun AllAppNavigation(navController : NavHostController) {
 fun StartNavigation(navController: NavHostController) {
     val viewModel: AuthViewModel = AuthViewModel()
 
-    NavHost(navController, startDestination = Screen.MainScaffold.route) {
+    NavHost(navController, startDestination = Screen.LoginPage.route) {
         composable(Screen.MainScaffold.route){
             MainScaffold()
         }

@@ -11,13 +11,13 @@ import androidx.navigation.compose.rememberNavController
 import com.mertg.baristaautomation.navigation.StartNavigation
 import com.mertg.baristaautomation.ui.theme.BaristaAutomationTheme
 
-
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BaristaAutomationTheme {
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

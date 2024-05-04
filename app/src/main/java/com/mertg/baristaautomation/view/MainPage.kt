@@ -195,7 +195,7 @@ fun MainPage() {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text("Masa Numarası") },
             placeholder = { Text("Masa Numarası") },
-            textStyle = LocalTextStyle.current.copy(color = Color.Black) // İstediğiniz renk
+            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.primary) // İstediğiniz renk
         )
 
         Spacer(modifier = Modifier.height(25.dp))

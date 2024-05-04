@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import com.mertg.baristaautomation.viewmodel.ShowOrdersViewModel
 val showOrdersViewModel = ShowOrdersViewModel()
 
 val orderList = mutableStateListOf<Order>()
+val isButtonClicked : MutableState<Boolean> = mutableStateOf(false)
 
 @Composable
 fun ShowOrdersPage() {
@@ -57,6 +59,8 @@ fun ShowOrdersPage() {
         }
     }
 }
+
+
 @Composable
 fun siparisDurumuRengi(siparisDurumu: String): MutableState<Color> {
     return remember {
@@ -69,6 +73,7 @@ fun siparisDurumuRengi(siparisDurumu: String): MutableState<Color> {
 }
 @Composable
 fun SiparisRow(order: Order) {
+    val context = LocalContext.current
 
     val siparisDurumuRengi = siparisDurumuRengi(siparisDurumu = order.siparisDurumu!!)
 
@@ -161,13 +166,10 @@ fun SiparisRow(order: Order) {
             {
                 Button(
                     onClick = {
-                        val newStatus = if (order.siparisDurumu == "Sipariş Tamamlanmadı") {
-                            "Sipariş Tamamlandı"
-                        } else {
-                            "Sipariş Tamamlanmadı"
-                        }
-                        /*// Sipariş kimliğini ve yeni durumu güncelle
-                        showOrdersViewModel.updateOrderStatus(order.siparisID, newStatus)*/
+                        // Butona tıklama olayını tetikle
+                        isButtonClicked.value = true
+                        showOrdersViewModel.updateOrdersByTableNumber(order.masaNumarasi)
+                        Toast.makeText(context, "${order.masaNumarasi} sipariş durumu değiştiriliyor, sayfayı yenileyin", Toast.LENGTH_SHORT).show()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = siparisDurumuRengi.value)
                 ) {

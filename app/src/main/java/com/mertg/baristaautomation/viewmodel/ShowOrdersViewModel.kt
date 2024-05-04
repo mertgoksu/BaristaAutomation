@@ -5,7 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.mertg.baristaautomation.model.Order
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class ShowOrdersViewModel : ViewModel(){
@@ -42,25 +45,47 @@ class ShowOrdersViewModel : ViewModel(){
         return siparisDurumuRenkleri.getOrPut(siparisDurumu) { mutableStateOf(Color.Red) }
     }
 
-    // Sipariş durumu güncelleme işlemi
-    suspend fun updateOrderStatus(order: String, newStatus: String) {
-        val orderId = order // Siparişin kimlik belirtecini buradan alın, gerçek isim neyse onu kullanın
+    // ShowOrdersViewModel sınıfı içindeki updateOrdersByTableNumber fonksiyonu
+    fun updateOrdersByTableNumber(tableNumber: String) {
+        GlobalScope.launch {
+            // Firestore'dan belirli bir masa numarasına sahip olan tüm siparişleri al
+            val querySnapshot = db.collection("orders")
+                .whereEqualTo("Masa Numarası", tableNumber)
+                .get()
+                .await()
 
-        // Belirli bir koleksiyondaki belgeyi al
-        val orderRef = db.collection("orders").document(orderId)
+            // Her belgeyi dönerek sipariş durumunu güncelle
+            for (document in querySnapshot.documents) {
+                val masaNumarasi = document.getString("Masa Numarası") // Masa numarasını al
 
-        // Sipariş durumu alanını güncelle
-        orderRef.update("Sipariş Durumu", newStatus)
-            .await()
+                // Eğer döngüdeki belgenin masa numarası istediğimiz masa numarasıyla eşleşiyorsa devam et
+                if (masaNumarasi == tableNumber) {
+                    // Sipariş durumunu al
+                    val currentStatus = document.getString("Sipariş Durumu")
 
-        // Sipariş durumu rengini güncelle
-        getSiparisDurumuRenk(newStatus).value = if (newStatus == "Sipariş Tamamlanmadı") {
-            Color.Red
-        } else {
-            Color.Green
+                    // Yeni durumu belirle
+                    val newStatus = if (currentStatus == "Sipariş Tamamlandı") {
+                        "Sipariş Tamamlanmadı"
+                    } else {
+                        "Sipariş Tamamlandı"
+                    }
+
+                    // Sipariş durumunu güncelle
+                    val orderId = document.id // Siparişin kimlik belirtecini al
+                    val orderRef = db.collection("orders").document(orderId)
+                    orderRef.update("Sipariş Durumu", newStatus).await()
+
+                    // Güncelleme başarılıysa sipariş durumu rengini de güncelle
+                    getSiparisDurumuRenk(newStatus).value = if (newStatus == "Sipariş Tamamlanmadı") {
+                        Color.Red
+                    } else {
+                        Color.Green
+                    }
+
+                }
+            }
         }
     }
-
 
     suspend fun getAllOrders(): List<Order> {
         val ordersList = mutableListOf<Order>()
@@ -68,8 +93,12 @@ class ShowOrdersViewModel : ViewModel(){
         // Firestore referansını al
         val db = FirebaseFirestore.getInstance()
 
-        // Belirli bir koleksiyondan tüm belgeleri al
-        val querySnapshot = db.collection("orders").get().await()
+        // Belirli bir koleksiyondan son 15 belgeyi al
+        val querySnapshot = db.collection("orders")
+            .orderBy("Sipariş Tarihi", Query.Direction.DESCENDING)
+            .limit(10)
+            .get()
+            .await()
 
         // Her belgeyi dönerek içeriğini Order nesnesine dönüştür ve listeye ekle
         for (document in querySnapshot.documents) {
@@ -100,13 +129,7 @@ class ShowOrdersViewModel : ViewModel(){
             if (order != null) {
                 ordersList.add(order)
             }
-
         }
-
         return ordersList
     }
-
-
-
-
 }
