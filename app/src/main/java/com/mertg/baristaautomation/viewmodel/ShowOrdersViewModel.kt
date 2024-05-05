@@ -46,20 +46,20 @@ class ShowOrdersViewModel : ViewModel(){
     }
 
     // ShowOrdersViewModel sınıfı içindeki updateOrdersByTableNumber fonksiyonu
-    fun updateOrdersByTableNumber(tableNumber: String) {
+    fun updateOrdersByTableNumber(siparisNum: String) {
         GlobalScope.launch {
             // Firestore'dan belirli bir masa numarasına sahip olan tüm siparişleri al
             val querySnapshot = db.collection("orders")
-                .whereEqualTo("Masa Numarası", tableNumber)
+                .whereEqualTo("Sipariş ID", siparisNum)
                 .get()
                 .await()
 
             // Her belgeyi dönerek sipariş durumunu güncelle
             for (document in querySnapshot.documents) {
-                val masaNumarasi = document.getString("Masa Numarası") // Masa numarasını al
+                val siparisNumarasi = document.getString("Sipariş ID") // Masa numarasını al
 
                 // Eğer döngüdeki belgenin masa numarası istediğimiz masa numarasıyla eşleşiyorsa devam et
-                if (masaNumarasi == tableNumber) {
+                if (siparisNumarasi == siparisNum) {
                     // Sipariş durumunu al
                     val currentStatus = document.getString("Sipariş Durumu")
 

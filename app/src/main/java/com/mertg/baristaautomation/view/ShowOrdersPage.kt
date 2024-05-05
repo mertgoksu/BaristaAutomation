@@ -168,7 +168,7 @@ fun SiparisRow(order: Order) {
                     onClick = {
                         // Butona tıklama olayını tetikle
                         isButtonClicked.value = true
-                        showOrdersViewModel.updateOrdersByTableNumber(order.masaNumarasi)
+                        showOrdersViewModel.updateOrdersByTableNumber(order.siparisID)
                         Toast.makeText(context, "${order.masaNumarasi} sipariş durumu değiştiriliyor, sayfayı yenileyin", Toast.LENGTH_SHORT).show()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = siparisDurumuRengi.value)
