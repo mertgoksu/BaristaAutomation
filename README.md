@@ -17,8 +17,8 @@ Barista Automation system to improve the connection between Barista and Waiter, 
 - Jetpack Compose <br>
 
 #
-### Here are some photos and videos of the app ;
-<br>
+### Here are some photos and videos of the app;
+#
 
 ### Login Page
 <img width="322" alt="1" src="https://github.com/mertgoksu/BaristaAutomation/assets/119433132/862be603-b14b-491d-8d4e-753b4d048544">
